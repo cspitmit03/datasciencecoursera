@@ -1,0 +1,274 @@
+SubTotalTS <- ts(SubTotal, frequency=12, start=c(2014,1))
+SubTotalTS <- ts(osmall$SubTotal, frequency=12, start=c(2014,1))
+subTotalTS
+ts(osmall$SubTotal, frequency=12)
+SubTotalTS <- ts(osmall$SubTotal, frequency=12)
+plot.ts(SubTotalTS)
+decompose(SubTotalTS)
+SubTotalTS <- ts(osmall$SubTotal, frequency=365)
+plot.ts(SubTotalTS)
+SubTotalTS
+SubTotalTS <- ts(osmall$SubTotal, frequency=12)
+plot.ts(SubTotalTS)
+SubTotalcomponents <- decompose(SubTotalTS)
+plot(SubTotalcomponents)
+x.fore <- forecast(OrdersXTS, h=10)
+sapply(osmallUS, class)
+transform(osmallUS, Total = as.numeric(Total))
+transform(osmalsdfsdflUS, sdf = as.numeric(Total))
+transform(osmallUS, Total = as.numeric(Total))
+sapply(osmallUS, class)
+source("/Users/cesarespitia/Documents/SQL/OrderTimeSeries.R")
+plot(OrdersXTS)
+Orders = read.csv("/Users/cesarespitia/Documents/SQL/RDataforOrders.csv")
+Orders
+sapply(Orders, class)
+Orders$Date <-as.Date(Orders$OrderDate, format="%m/%d/%Y"))
+Orders$Date <-as.Date(Orders$OrderDate, format="%m/%d/%Y")
+Orders
+Orders$Date <-as.Date(Orders$OrderDate, format="%Y/%m/%d")
+Orders
+Orders$Date <-as.Date(Orders$OrderDate, format="%m/%d/%Y")
+Orders
+Orders$Date <-as.Date(Orders$OrderDate, format="%m/%Y")
+Orders
+Orders$Date <-as.Date(Orders$OrderDate, format="%Y/%m/%d")
+Orders
+Orders$Date <-as.Date(Orders$OrderDate, format="%m/%d/%Y")
+Orders
+sapply(Orders, class)
+Orders = read.csv("/Users/cesarespitia/Documents/SQL/RDataforOrders.csv")
+sapply(Orders, class)
+Orders$Date <-as.Date(Orders$OrderDate, format="%m/%d/%Y")
+Orders
+OrdersXTS = xts(Orders$SubSum, Orders$Date)
+plot(OrdersXTS)
+library(forecast)
+x.ts <- as.ts(OrdersXTS)
+x.ts
+x.ets <- ets(x.ts)
+x.ets
+x.fore <- forecast(x.ets, h=10)
+x.fore
+plot(forecast(ets(x.ts), 10))
+plot.ts(x.ts)
+library(TTR)
+x.tsSMA3 <- SMA(x.ts,n=3)
+plot(x.tsSMA3)
+x.tsSMA8 <- SMA(x.ts,n=8)
+plot(x.tsSMA8)
+ordercomps <- decompose(x.ts)
+ordercomps <- decompose(OrdersXTS)
+x,ts
+x.ts
+decompose(x.ts)
+decompose(ets(x.ts))
+decompose(OrdersXTS)
+OTS <- ts(Orders$SubSum)
+OTS
+decompose(OTS)
+OTS <- ts(Orders$SubSum, frequency=12)
+OTS
+decompose(OTS)
+OTSdecomp <- decompose(OTS)
+plot(OTSdecomp)
+plot(OTS)
+plot(OrdersXTS)
+plot(OTS)
+plot(OrdersXTS)
+plot(OTS)
+plot(OTSdecomp)
+OrderHolt <- HoltWinters(x.ts, beta=FALSE, gamma=FALSE)
+OrderHolt
+plot(OrderHolt)
+x.fore2 <- forecast.HoltWinters(x.ts, h = 8)
+Forecast2 <- forecast.HoltWinters(x.ts, h=8)
+Forecast2 <- forecast.HoltWinters(OrderHolt, h=8)
+plot(Forecast2)
+Forecast2
+Forecast2$residuals
+acf(Forecast2$residuals, lag.max=20)
+Box.test(Forecast2$residuals, lag = 20, type="Ljung-Box")
+plot.ts(Forecast2$residuals)
+plotForecastErrors <- function(forecasterrors)#
+  {#
+     # make a histogram of the forecast errors:#
+     mybinsize <- IQR(forecasterrors)/4#
+     mysd   <- sd(forecasterrors)#
+     mymin  <- min(forecasterrors) - mysd*5#
+     mymax  <- max(forecasterrors) + mysd*3#
+     # generate normally distributed data with mean 0 and standard deviation mysd#
+     mynorm <- rnorm(10000, mean=0, sd=mysd)#
+     mymin2 <- min(mynorm)#
+     mymax2 <- max(mynorm)#
+     if (mymin2 < mymin) { mymin <- mymin2 }#
+     if (mymax2 > mymax) { mymax <- mymax2 }#
+     # make a red histogram of the forecast errors, with the normally distributed data overlaid:#
+     mybins <- seq(mymin, mymax, mybinsize)#
+     hist(forecasterrors, col="red", freq=FALSE, breaks=mybins)#
+     # freq=FALSE ensures the area under the histogram = 1#
+     # generate normally distributed data with mean 0 and standard deviation mysd#
+     myhist <- hist(mynorm, plot=FALSE, breaks=mybins)#
+     # plot the normal curve as a blue line on top of the histogram of forecast errors:#
+     points(myhist$mids, myhist$density, type="l", col="blue", lwd=2)#
+  }
+plotForecastErrors(Forecast2$Residuals)
+min(Forecast2$Residuals)
+Forecast2$Residuals
+Forecast2$residuals
+min(Forecast2$residuals)
+plotForecastErrors(Forecast2$residuals)
+mean(Forecast2$residuals)
+plot.forecast(Forecast2)
+Forecast2$SSE
+Forecast2$residuals
+Forecast2$fitted
+OrderHolt
+OrderHolt$fitted
+OrderHolt$SSE
+plot(OrderHolt)
+cor(Orders)
+install.packages("readxl")
+library(readxl)
+library("party")
+iris_ctree <- ctree(Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width, data=iris)
+iris_ctree
+print(iris_ctree)
+plot(iris_ctree)
+plot(iris_ctree, type="simple")
+library(swirl)
+swirl()
+Sys.Date()
+mean(c(2,4,5))
+submit()
+boring_function('My first function!')
+boring_function
+submit()
+my_mean(c(4,5,10))
+submit()
+remainder(5)
+remainder(11, 5)
+remainder(divisor = 11, num = 5)
+remainder(4, div = 2)
+args(remainder)
+submit()
+help
+exit
+?
+?help
+end
+0
+submit()
+evluate(sd(c(1.4, 3.6, 7.9, 8.8)))
+evaluate(sd(c(1.4, 3.6, 7.9, 8.8)))
+evaluate(sd, (c(1.4, 3.6, 7.9, 8.8)))
+evaluate(std, (c(1.4, 3.6, 7.9, 8.8)))
+evaluate(std, c(1.4, 3.6, 7.9, 8.8))
+evaluate(sd, c(1.4, 3.6, 7.9, 8.8))
+evaluate(function(x){x+1}, 6)
+evaluate(function(x){[1]}, c(8, 4, 0))
+evaluate(function(x){x[1]}, c(8, 4, 0))
+evaluate(function(x){x[-1]}, c(8, 4, 0))
+?paste
+paste("Programming", "is", "fun!")
+submit()
+telegram("test")
+submit()
+mad_libs(cesar, large, car)
+mad_libs("cesar", "large", "car")
+submit()
+"I" %p% "love" %p% "R!"
+head(flags)
+dim(flags)
+class(flags)
+cls_list <- lapply(flags, class)
+cls_list
+class(cls_list)
+as.character(cls_list)
+cls_vect <- sapply(cls_list)
+cls_vect <- sapply(flags, list)
+cls_vect <- sapply(flags, class)
+class(cls_vect)
+sum(flags$orange)
+flag_colors <- flags[, 11:17]
+head(flag_colors)
+lapply(flag_colors, sum)
+sapply(flag_colors, length)
+sapply(flag_colors, sum)
+sapply(flag_colors, mean)
+flag_shapes <- flags[, 19:23]
+lapply(flag_shapes, range())
+lapply(flag_shapes, range(flag_shapes))
+lapply(flag_shapes, range)
+shape_mat <- sapply(flag_shapes, range)
+shape_mat
+class(shape_mat)
+unique(c(3, 4, 5, 5, 5, 6, 6))
+unique_vals(flags, unique)
+unique_vals <- lapply(flags, unique)
+unique_vals
+unique_vals <- sapply(flags, length)
+unique_vals <- sapply(flags, length)\
+unique_vals <- sapply(flags, length)
+sapply(unique_vals, length)
+sapply(flags, length)
+sapply(flags, unique)
+lapply(unique_vals, function(elem elem[2]))
+lapply(unique_vals, function(elem) elem[2]))
+lapply(unique_vals, function(elem) elem[2])
+?lapply
+getwd()
+setwd("Documents/datasciencecoursera")
+getwd()
+list.files()
+setwd("rprog-data-ProgAssignment3-data")
+list.files()
+source("best.R")
+best("TX", "heart attack")
+best("TX", "heart failure")
+best("MD", "heart attack")
+"GREATER BALTIMORE MEDICAL CENTER"
+best("MD", "pneumonia")
+best("BB", "heart attack")
+best("NY", "hert attack")
+list.files()
+source("rprog-scripts-submitscript3.R"")
+source("rprog-scripts-submitscript3.R")
+source("rprog-scripts-submitscript3.R")
+submit()
+2
+submit()
+submit()
+list.files()
+source("rankhospital.R")
+rankhospital("TX", "heart failure", 4)
+rankhospital("MD", "heart attack", "worst")
+rankhospital("MN", "heart attack", 5000)
+source("rprog-scripts-submitscript3.R")
+submit()
+submit()
+submit()
+submit()
+set.seed(1)
+rpois(5,2)
+set.seed(2)
+rpois(5,2)
+set.seed(1)
+rpois(5,2)
+set.seed(1)
+a<- rpois(5,2)
+a
+class(a)
+str(a)
+?dnorm
+set.seed(10)#
+x <- rep(0:1, each = 5)#
+e <- rnorm(10, 0, 20)#
+y <- 0.5 + 2 * x + e
+x
+x
+e
+y
+class(y)
+str(y)
+plot(e,y)

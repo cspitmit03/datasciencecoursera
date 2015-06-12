@@ -1,0 +1,261 @@
+qnorm(.95, mean = 1100, sd = 75)
+qnorm(.95, mean = 1100, sd = 75/sqrt(100))
+ppois(10, lambda = 5*3)
+library(dplyr)
+complete_cases()
+?hist
+library(ggplot2)
+library(lattice)
+getwd()
+setwd("/Users/cesarespitia/Documents/datasciencecoursersa/Reproducible Research/Assignment 1")
+setwd("/Users/cesarespitia/Documents/datasciencecoursera/Reproducible Research/Assignment 1")
+list.file()
+list.files()
+library(dplyr)#
+activity <- read.csv("activity.csv", header=T)
+head(activity)
+tail(activity)
+summary(activity)
+data <- tbl_df(activity)
+datacomplete <- na.omit(data)
+summary(data.frame(datacomplete))
+byday <- group_by(datacomplete, date)
+byday
+summarise(byday, DailySteps = sum(steps), MeanSteps = mean(steps), MedianSteps = median(steps))
+summarise(byday, mean = mean(DailySteps))
+byday
+summarise(byday, mean = mean(steps))
+summarise(byday, median = median(steps))
+view(stepsbyday)
+View(stepsbyday)
+stepsbyday <- summarise(byday, DailySteps = sum(steps), MeanSteps = mean(steps), MedianSteps = median(steps))
+View(stepsbyday)
+filter(stepsbyday, MedianSteps >0)
+by5min <- group_by(datacomplete, interval)
+by5min
+stepsby5min <- summarise(by5min, DailySteps = sum(steps), MeanSteps = mean(steps), MedianSteps = median(steps))
+stepsby5min
+stepsby5min <- summarise(by5min, TotalStepsAcrossDays = sum(steps), MeanStepsAcrossDays = mean(steps), MedianStepsAcrossDays = median(steps))
+stepsby5min
+View(stepsby5min)
+stepsby5min <- summarise(by5min, TotalStepsAcrossDays = sum(steps), MeanStepsAcrossDays = mean(steps), MedianStepsAcrossDays = median(steps))#
+ggplot(stepsby5min, aes(interval, MeanStepsAcrossDays)) + geom_point(aes(size = MeanStepsAcrossDays)) + scale_size_area()
+max(TotalStepsAcrossDays)
+max(stepsby5min$TotalStepsAcrossDays)
+stepsby5min
+ggplot(stepsby5min, aes(interval, MeanStepsAcrossDays)) + geom_point(aes(size = MeanStepsAcrossDays)) + scale_size_area()
+sumarrise(stepsby5min, MeanStepsAcrossDays)
+sumarrise(stepsby5min, max(MeanStepsAcrossDays))
+sumarise(stepsby5min, max(MeanStepsAcrossDays))
+summarise(stepsby5min, max(MeanStepsAcrossDays))
+summarise(stepsby5min, interval, max(MeanStepsAcrossDays))
+summarise(stepsby5min, max(MeanStepsAcrossDays))
+filter(stepsby5min, max(meanStepsAcrossDay))
+filter(stepsby5min, max(MeanStepsAcrossDays))
+(stepsby5min, max(MeanStepsAcrossDays))select
+select(stepsby5min, max(MeanStepsAcrossDays))
+arrange(stepsby5min, desc(MeanStepsAcrossDays))
+filter(stepsby5min, MeanStepsAcrossDays = max(MeanStepsAcrossDays))
+filter(stepsby5min, MeanStepsAcrossDays == max(MeanStepsAcrossDays))
+summarise(byday, mean = mean(steps))
+summarise(byday, median = median(steps))
+summarise(byday, mean = mean(steps), median = median(steps))
+nrow(data)
+nrow(completedata)
+nrow(datacomplete)
+tail9datacomplete
+dail(datacomplete)
+tail(datacomplete)
+nrow(data) - nrow(datacomplete)
+is.na(data$steps)
+nrow(is.na(data$steps)==TRUE)
+nrow(is.na(data$steps)=="TRUE")
+sum(is.na(data$steps))
+nrow(data) - nrow(datacomplete)
+summary(data)
+stepsby5min
+data
+dataimpute <- left_join(data, stepsby5min)
+dataimpute
+dataimpute <- left_join(data, stepsby5min, by = interval)
+dataimpute <- left_join(data, stepsby5min, by = "date")
+dataimpute <- left_join(data, stepsby5min, by = date)
+dataimpute <- left_join(data, stepsby5min, by == date)
+?left_join
+filter(dataimpute, interval == 0)
+muate(dataimpute, ImputedSteps = steps ifelse(is.na(steps), MeanStepsAcrossDays, steps) )
+mutate(dataimpute, ImputedSteps = steps ifelse(is.na(steps), MeanStepsAcrossDays, steps) )
+mutate(dataimpute, ImputedSteps = ifelse(is.na(steps), MeanStepsAcrossDays, steps) )
+mutate(dataimpute, ImputedSteps = ifelse(is.na(steps), MeanStepsAcrossDays, steps))
+test2 <- mutate(dataimpute, ImputedSteps = ifelse(is.na(steps), MeanStepsAcrossDays, steps))
+test2
+summarise(dataimpute, ImputedSteps = ifelse(is.na(steps), MeanStepsAcrossDays, steps))
+dataimpute
+filter(dataimpute, is.na(steps))
+mutate(dataimpute, steps = MeanStepsAcrossDays)
+remove_filter()
+remove_filter(dataimpute)
+dataimpute
+dataimpute2 <- dataimpute
+dataimpute2
+dataimpute2 %>% add_filter(dataimpute2, is.na(steps)) %>% mutate(steps = MeanStepsAcrossDays) %>% remove_filter()
+dataimpute2
+dataimpute2 %>% muate(steps=ifelse(is.na(steps), MeanStepsAcrossDays, steps))
+dataimpute2 %>% mutate(steps=ifelse(is.na(steps), MeanStepsAcrossDays, steps))
+dataimpute2
+dataimpute2 <- dataimpute2 %>% mutate(steps=ifelse(is.na(steps), MeanStepsAcrossDays, steps))
+dataimpute2
+filter(dataimpute2, steps == 0)
+filter(dataimpute2, steps >0 0)
+filter(dataimpute2, steps >= 0)
+dataimpute <- left_join(data, stepsby5min)
+dataimpute
+dataimpute2 <- dataimpute %>% mutate(steps=ifelse(is.na(steps), MeanStepsAcrossDays, steps))
+dataimpute2
+dataimpute2 <- select(dataimpute2, steps:interval)
+dataimpute2
+imputedbyday <- group_by(dataimpute2, date)#
+imputedstepsbyday <- summarise(imputedbyday, DailySteps = sum(steps), MeanSteps = mean(steps), MedianSteps = median(steps))#
+hist(imputedstepsbyday$DailySteps, breaks = 10)
+byday <- group_by(datacomplete, date)#
+stepsbyday <- summarise(byday, DailySteps = sum(steps), MeanSteps = mean(steps), MedianSteps = median(steps))#
+hist(stepsbyday$DailySteps, breaks = 10)
+hist(imputedstepsbyday$DailySteps, breaks = 10)
+summary(imputedstepsbyday)
+summary(stepsbyday)
+stepsbyday
+imputedstepsbyday <- summarise(imputedbyday, ImpDailySteps = sum(steps), ImpMeanSteps = mean(steps), ImpMedianSteps = median(steps))#
+hist(imputedstepsbyday$ImpDailySteps, breaks = 10)
+combo <- left_join(stepsbyday, imputedstepsbyday)
+combo
+combo <- left_join(stepsbyday, imputedstepsbyday) %>% mutate(DailyStepsDelta = ImpDailySteps - DailySteps, MeanDelta = ImpMeanSteps - MeanSteps)
+combo
+combo <- left_join(stepsbyday, imputedstepsbyday) %>% mutate(combo, DailyStepsDelta = ImpDailySteps - DailySteps, MeanDelta = ImpMeanSteps - MeanSteps)
+combo <- left_join(stepsbyday, imputedstepsbyday)
+combo <- mutate(combo, DailyStepsDelta = ImpDailySteps - DailySteps, MeanDelta = ImpMeanSteps - MeanSteps)
+combo
+summary(combo)
+summary(stepsbyday)
+summary(imputedstepsbyday)
+getwd()
+write.csv(dataimpute2, "dataimpute2.csv")
+summarise(combo, MeanDelta = ImpMeanSteps - MeanSteps)
+combo
+combo <- left_join(stepsbyday, imputedstepsbyday)
+summarise(combo, MeanDelta = ImpMeanSteps - MeanSteps)
+summarise(combo, MeanDelta = ImpMeanSteps-MeanSteps)
+mutate(combo, MeanDelta = ImpMeanSteps-MeanSteps))
+mutate(combo, MeanDelta = ImpMeanSteps-MeanSteps)
+arrange(combo, desc(MeanDelta))
+combo <- mutate(combo, MeanDelta = ImpMeanSteps-MeanSteps)
+arrange(combo, desc(MeanDelta))
+data
+datacomplete
+dataimpute
+dataimpute2 <- dataimpute %>% mutate(steps=ifelse(is.na(steps), MeanStepsAcrossDays, steps))
+dataimpute2
+dataimpute2 <- select(dataimpute2, steps:interval)
+imputedbyday <- group_by(dataimpute2, date)
+imputedstepsbyday <- summarise(imputedbyday, ImpDailySteps = sum(steps), ImpMeanSteps = mean(steps), ImpMedianSteps = median(steps))
+hist(imputedstepsbyday$ImpDailySteps, breaks = 10)
+summarise(byday, mean = mean(steps), median = median(steps))
+summarise(imputedbyday, mean = mean(steps), median = median(steps))
+stepsbyday
+imputedstepsbyday
+combo <- left_join(imputedstepsbyday, stepsbyday)
+combo
+combo <- mutate(combo, MeanDelta = ImpMeanSteps-MeanSteps)
+arrange(combo, desc(MeanDelta))
+combo
+combo <- mutate(combo, MeanDelta = ifelse(is.na(MeanSteps), ImpMeanSteps, ImpMeanSteps-MeanSteps))
+combo
+summary(data)combo <- mutate(combo, MeanDelta = ifelse(is.na(MeanSteps), ImpMeanSteps, ImpMeanSteps-MeanSteps), MedianDelta = ifelse(is.na(MedianSteps), ImpMedianSteps, ImpMedianSteps-MedianSteps))
+combo <- mutate(combo, MeanDelta = ifelse(is.na(MeanSteps), ImpMeanSteps, ImpMeanSteps-MeanSteps), MedianDelta = ifelse(is.na(MedianSteps), ImpMedianSteps, ImpMedianSteps-MedianSteps))
+combo
+combo <- left_join(imputedstepsbyday, stepsbyday)
+mutate(combo, MeanDelta = ifelse(is.na(MeanSteps), ImpMeanSteps, ImpMeanSteps-MeanSteps), MedianDelta = ifelse(is.na(MedianSteps), ImpMedianSteps, ImpMedianSteps-MedianSteps))
+combo <- mutate(combo, MeanDelta = ifelse(is.na(MeanSteps), ImpMeanSteps, ImpMeanSteps-MeanSteps))
+combo <- mutate(combo, MedianDelta = ifelse(is.na(MedianSteps), ImpMedianSteps, ImpMedianSteps-MedianSteps))
+combo
+combo <- mutate(combo, MedianDelta = ifelse(is.na(MedianSteps), ImpMedianSteps, ImpMedianSteps-MedianSteps))
+combo
+mutate(combo, MeanDelta = ifelse(is.na(MeanSteps), ImpMeanSteps, ImpMeanSteps-MeanSteps), MedianDelta = ifelse(is.na(MedianSteps), ImpMedianSteps, ImpMedianSteps-MedianSteps))
+select(combo, MeanDelta != 0 | MedianDelta != 0)
+select(combo, MeanDelta != 0)
+select(combo, !(MeanDelta == 0))
+filter(combo, !(MeanDelta == 0))
+summary(stepsbyday)
+summary(imputedstepsbyday)
+cbind(summary(imputedstepsbyday$ImpMeanSteps), summary(stepsbyday$MeanSteps))
+cbind(summary(imputedstepsbyday$ImpMeanSteps), summary(stepsbyday$MeanSteps), summary(imputedstepsbyday$ImpMedianSteps), summary(stepsbyday$MedianSteps))
+statscompare <- cbind(summary(imputedstepsbyday$ImpMeanSteps), summary(stepsbyday$MeanSteps), summary(imputedstepsbyday$ImpMedianSteps), summary(stepsbyday$MedianSteps))#
+statscompare <- cnames("ImpMeanSteps", "OrigMeanSteps", "ImpMedianSteps", "OrigMedianSteps")
+statscompare <- cname("ImpMeanSteps", "OrigMeanSteps", "ImpMedianSteps", "OrigMedianSteps")
+colnames(statscompare) <- c("ImpMeanSteps", "OrigMeanSteps", "ImpMedianSteps", "OrigMedianSteps")
+statscompare
+?weekday
+?weekdays()
+dataimpute2
+weekdays(dataimpute2$steps)
+weekdays(dataimpute2$date)
+mutate(dataimpute2, new = weekdays(date, abbr = TRUE))
+weekdays(dataimpute2$date, abbr = TRUE)
+library(lubridate)
+wday(dataimpute2, label = TRUE)
+library(lubridate)
+wday(dataimpute2, label = TRUE)
+wday(dataimpute2$date, label = TRUE)
+mutate(dataimpute2, DayFlag = ifelse(wday(dataimpute2$date, label = TRUE) == "Sat|Sun", "Weekend", "Weekday")
+mutate(dataimpute2, DayFlag = ifelse(wday(dataimpute2$date, label = TRUE) == "Sat|Sun", "Weekend", "Weekday"))
+DayFlagData <- mutate(dataimpute2, DayFlag = ifelse(wday(dataimpute2$date, label = TRUE) == "Sat|Sun", "Weekend", "Weekday"))
+DayFlagData
+summary(DayFlagData)
+DayFlagData <- group_by(DayFlagData, date)
+DayFlagData
+DayFlagData <- group_by(DayFlagData, date, DayFlag)
+DayFlagData
+DayFlagDataSteps <- summarise(DayFlagData, DailySteps=sum(steps), MeanSteps=mean(steps))
+DayFlagDataSteps
+filter(DayFlagDataSteps, DayFlag == "Weekend")
+filter(DayFlagDataSteps, DayFlag == "Weekday")
+DayFlagData <- mutate(dataimpute2, DayFlag = ifelse(wday(dataimpute2$date, label = TRUE) == ("Sat" | "Sun"), "Weekend", "Weekday"))
+DayFlagData <- mutate(dataimpute2, DayFlag = wday(dataimpute2$date, label = TRUE))
+DayFlagData
+filter(DayFlagData, DayFlag == "Sat")
+DayFlagData <- mutate(DayFlagData, WeekendFlag = ifelse(DayFlag == "Sat|Sun", "Weekend", "Weekday"))
+DayFlagData
+filter(DayFlagData, DayFlag == "Sat")
+DayFlagData <- mutate(DayFlagData, WeekendFlag = ifelse(DayFlag %in% c("Sat", "Sun"), "Weekend", "Weekday"))
+filter(DayFlagData, DayFlag == "Sat")
+filter(DayFlagData, DayFlag == "Sun")
+DayFlagData <- mutate(dataimpute2, DayFlag = ifelse(wday(dataimpute2$date, label = TRUE) %in% c("Sat", "Sun"), "Weekend", "Weekday"))
+DayFlagData
+filter(DayFlagData, DayFlag == "Weekend")
+filter(DayFlagData, DayFlag == "Weekday")
+DayFlagData
+GroupFlagData <- group_by(DayFlagData, interval, DayFlag)
+GroupFlagData
+GroupFlagData <- group_by(DayFlagData, interval, DayFlag)#
+GroupFlagData <- summarise(GroupFlagData, NewTotalSteps = sum(steps), NewMeanSteps = mean(steps))
+GroupFlagData <- summarise(GroupFlagData, NewTotalSteps = sum(steps), NewMeanSteps = mean(steps))
+GroupFlagData <- group_by(DayFlagData, interval, DayFlag)#
+GroupFlagData <- summarise(GroupFlagData, NewTotalSteps = sum(steps), NewMeanSteps = mean(steps))
+GroupFlagData
+GroupFlagData <- summarise(GroupFlagData, NewTotalSteps = sum(steps), NewMeanSteps = mean(steps))#
+ggplot(GroupFlagData, aes(interval, MeanStepsAcrossDays)) + geom_point(aes(size = MeanStepsAcrossDays)) + facet_wrap(~DayFlag) + scale_size_area()
+ggplot(GroupFlagData, aes(interval, NewMeanSteps)) + geom_point(aes(size = NewMeanSteps)) + facet_wrap(~DayFlag) + scale_size_area()
+ggplot(GroupFlagData, aes(interval, NewMeanSteps)) + geom_point(aes(size = NewMeanSteps)) + facet_wrap(~DayFlag, rcol = 2) + scale_size_area()
+ggplot(GroupFlagData, aes(interval, NewMeanSteps)) + geom_point(aes(size = NewMeanSteps)) + facet_wrap(~DayFlag, ncol = 1) + scale_size_area()
+ggplot(GroupFlagData, aes(interval, NewMeanSteps)) + geom_path() + facet_wrap(~DayFlag, rcol = 2) + scale_size_area()
+ggplot(GroupFlagData, aes(interval, NewMeanSteps)) + geom_path() + facet_wrap(~DayFlag, ncol = 1) + scale_size_area()
+ggplot(GroupFlagData, aes(interval, NewMeanSteps)) + geom_path(color = blue) + facet_wrap(~DayFlag, ncol = 1) + scale_size_area()
+ggplot(GroupFlagData, aes(interval, NewMeanSteps)) + geom_path(color = "blue") + facet_wrap(~DayFlag, ncol = 1) + scale_size_area()
+ggplot(GroupFlagData, aes(interval, NewMeanSteps), background="white") + geom_path(color = "blue") + facet_wrap(~DayFlag, ncol = 1) + scale_size_area()
+ggplot(GroupFlagData, aes(interval, NewMeanSteps)) + geom_path() + facet_wrap(~DayFlag, rcol = 2) + scale_size_area() + theme_bw()
+ggplot(GroupFlagData, aes(interval, NewMeanSteps)) + geom_path(color = "blue") + facet_wrap(~DayFlag, ncol = 1) + scale_size_area() + theme_bw()
+xyplot(NewMeanSteps ~ Interval | DayFlag, GroupFlagData, type="l")
+xyplot(NewMeanSteps ~ interval | DayFlag, GroupFlagData, type="l")
+xyplot(MeanStepsAcrossDays ~ interval, stepsby5min, type="l")
+xyplot(NewMeanSteps ~ interval | DayFlag, GroupFlagData, type="l", ncol = 1)
+xyplot(NewMeanSteps ~ interval | DayFlag, GroupFlagData, type="l", ncol = 1, layout = c(1,2))
+summary(data)
