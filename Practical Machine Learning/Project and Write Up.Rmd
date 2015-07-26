@@ -25,7 +25,6 @@ set.seed(10)
 myTrain <- createDataPartition(y=training$classe, p=0.7, list=FALSE)
 myTraining <- training[myTrain, ]; myTesting <- training[-myTrain, ]
 dim(myTraining); dim(myTesting)
-summary(myTraining)
 ```
 
 In reviewing the summary of the data, there are quite a few columsn that had many missing variables in excess of 95% (13462/13737).  These columns were completed ignored.  In addition, the first 7 columns were of no use and therefore only from column 8 to 60 (roll_belt to classe) will be used.
@@ -34,7 +33,6 @@ In reviewing the summary of the data, there are quite a few columsn that had man
 na_test = sapply(myTraining, function(x) {sum(is.na(x))})
 noNAs = names(na_test[na_test==0])
 myTraining = myTraining[, names(myTraining) %in% noNAs]
-str(myTraining)
 myTraining <- myTraining[,8:60]
 dim(myTraining)
 ```
