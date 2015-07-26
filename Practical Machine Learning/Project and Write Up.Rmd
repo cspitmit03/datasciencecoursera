@@ -1,0 +1,97 @@
+---
+title: "Practical Machine Learning Project"
+author: "Cesar Espitia"
+date: "July 26, 2015"
+output: html_document
+---
+
+###Background
+
+Using devices such as Jawbone Up, Nike FuelBand, and Fitbit it is now possible to collect a large amount of data about personal activity relatively inexpensively. These type of devices are part of the quantified self movement – a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behavior, or because they are tech geeks. One thing that people regularly do is quantify how much of a particular activity they do, but they rarely quantify how well they do it. In this project, your goal will be to use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants. They were asked to perform barbell lifts correctly and incorrectly in 5 different ways. More information is available from the website here: http://groupware.les.inf.puc-rio.br/har (see the section on the Weight Lifting Exercise Dataset). 
+
+###Importing, Splitting and Cleansing the Data 
+In this portion we will inport the data and place them into two matrices (training and testing) for our anlaysis further below.
+
+The training data will then be partitioned 70%/30% (training and sub testing) with final validation of the model on the testing set that is imported straight from the website.  I also set the seed to 10 in order to be able to reproduce the information.
+
+```{r}
+library(caret, warn.conflicts = FALSE); library(ggplot2, warn.conflicts = FALSE); library(randomForest, warn.conflicts = FALSE); library(dplyr, warn.conflicts = FALSE); library(rattle, warn.conflicts = FALSE); library(rpart, warn.conflicts = FALSE)
+trainUrl <- "http://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv"
+testUrl <- "http://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv"
+training <- read.csv(url(trainUrl), na.strings=c("NA","#DIV/0!",""))
+testing <- read.csv(url(testUrl), na.strings=c("NA","#DIV/0!",""))
+
+set.seed(10)
+myTrain <- createDataPartition(y=training$classe, p=0.7, list=FALSE)
+myTraining <- training[myTrain, ]; myTesting <- training[-myTrain, ]
+dim(myTraining); dim(myTesting)
+summary(myTraining)
+```
+
+In reviewing the summary of the data, there are quite a few columsn that had many missing variables in excess of 95% (13462/13737).  These columns were completed ignored.  In addition, the first 7 columns were of no use and therefore only from column 8 to 60 (roll_belt to classe) will be used.
+
+```{r, echo=FALSE}
+na_test = sapply(myTraining, function(x) {sum(is.na(x))})
+noNAs = names(na_test[na_test==0])
+myTraining = myTraining[, names(myTraining) %in% noNAs]
+str(myTraining)
+myTraining <- myTraining[,8:60]
+dim(myTraining)
+```
+
+The same was done my sub training set.
+
+```{r, echo=FALSE}
+noNAs = names(na_test[na_test==0])
+myTesting = myTesting[, names(myTesting) %in% noNAs]
+myTesting <- myTesting[,8:60]
+dim(myTesting)
+```
+
+###Creating the Model
+The goal of this model is to determine the classe (exercise type) based upon inputs from the fitness trackers used by individuals.
+
+####Random Forest
+First, I will try a random forest model to see the predictive power of it.
+This model had a kappa of over 0.99 which is great, very few inaccurate predictions across the classes.  
+
+```{r}
+modelRF <- randomForest(classe~., data=myTraining)
+predictRF <- predict(modelRF, myTesting, type = "class")
+confusionMatrix(predictRF, myTesting$classe)
+```
+
+####Decision Tree
+Second, a decision tree was used to determine the predictive power to determine classe type.  Unfortunately, this model was a poor model with an accuracy of only 0.72 and a kappa value of 0.6437.  The biggest problem came with trying to predict Class B, C and D was where a lot of the mistakes occured.
+
+```{r}
+modelDT <- rpart(classe~., data=myTraining, method="class")
+predictDT <- predict(modelDT, myTesting, type = "class")
+confusionMatrix(predictDT, myTesting$classe)
+```
+
+In comparing the two, it is clear that the Random Forest model initially was the best model to predict the classe type.
+
+### Predicting the true Testing Data set from the website and submitting the information.
+
+The following is the code to test the testing data set.
+
+```{r}
+predictSubmission <- predict(modelRF, testing, type="class")
+```
+
+We then write out the information.
+
+```{r}
+setwd("/Users/cesarespitia/Documents/datasciencecoursera/Practical Machine Learning/submission")
+pml_write_files = function(x){
+  n = length(x)
+  for(i in 1:n){
+    filename = paste0("problem_id_",i,".txt")
+    write.table(x[i],file=filename,quote=FALSE,row.names=FALSE,col.names=FALSE)
+  }
+}
+
+pml_write_files(predictSubmission)
+```
+

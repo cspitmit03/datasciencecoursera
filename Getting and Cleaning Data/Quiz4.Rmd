@@ -1,0 +1,52 @@
+---
+title: "Quiz 4"
+author: "Cesar Espitia"
+date: "June 24, 2015"
+output: html_document
+---
+
+Question 1.  Apply strsplit() to split all the names of the data frame on the characters "wgtp". What is the value of the 123 element of the resulting list?
+
+
+```{r}
+data <- read.csv("getdata-data-ss06hid.csv", header=T)
+strsplit(names(data[123]), "wgtp")
+```
+
+Question 2. Remove the commas from the GDP numbers in millions of dollars and average them. What is the average? 
+
+
+```{r, echo=FALSE}
+dataGDP <- read.csv("getdata-data-GDP.csv")
+Vals <- dataGDP$X.3[5:216]
+Vals <- as.numeric(gsub(",","",Vals))
+mean(Vals, na.rm=TRUE)
+```
+
+Question 3. 
+
+```{r}
+grep("^United",dataGDP$X.2)
+```
+
+Question 4. 
+
+```{r}
+url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv"
+f <- file.path(getwd(), "EDSTATS_Country.csv")
+download.file(url, f)
+dtEd <- data.table(read.csv(f))
+dt <- merge(dtGDP, dtEd, all = TRUE, by = c("CountryCode"))
+isFiscalYearEnd <- grepl("fiscal year end", tolower(dt$Special.Notes))
+isJune <- grepl("june", tolower(dt$Special.Notes))
+table(isFiscalYearEnd, isJune)
+```
+
+Question 5. Amazon
+
+```{r}
+amzn <- getSymbols("AMZN", auto.assign = FALSE)
+sampleTimes <- index(amzn)
+addmargins(table(year(sampleTimes), weekdays(sampleTimes)))
+```
+

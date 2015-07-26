@@ -1,0 +1,108 @@
+---
+title: "Regression Project"
+author: "Cesar Espitia"
+date: "July 9, 2015"
+output: word_document
+---
+
+##Executive Summary - Motor Trends
+
+The purpose of this project was to determine the relationship between a set of variables and the vehicles fuel efficiency quantified as MPG.  Specifically the following:
+
+- which transmission has better MPG, Automatic or Manual?
+- expalin the differences between them
+
+Fromt he analysis to follow, it became clear tha although there are quantifiable differences in one transmission type being better than the other, other more appropriable variabels were better estimates of fuel efficiency.  In addition, the data set would benefit from having more data points (n>32; perhaps n>100) in order to have higher degrees of confidence in the results.
+
+##Data Preparation
+
+The data is already a part of the R library of data related and doesn't require much manipulation.  For the purposes of this exercise, the variables cyl, vs, gear, carb and am were coerced into factors in order to better understand the ffects on the regression model as they are binary / categorical in nature and truly continuous.
+
+```{r, cache=FALSE}
+#load and store data
+library(datasets, warn.conflicts = FALSE); library(ggplot2, warn.conflicts = FALSE); library(caret, warn.conflicts = FALSE); library(dplyr, warn.conflicts = FALSE)
+cars <- mtcars; cars$cyl  <- factor(cars$cyl); cars$vs   <- factor(cars$vs);cars$gear <- factor(cars$gear); cars$carb <- factor(cars$carb); cars$am <- factor(cars$am, labels=c("Auto","Man"))
+```
+
+##Exploratory Analysis
+###Box Plot - Transmission vs. MPG
+A boxplot was chosen to visualize the correlation between transmission and fuel efficiency, the data points were also overlayed to determine if any outliers exist.  
+
+```{r}
+#note Automatic = 0, Manual = 1
+ggplot(mtcars, aes(factor(am), mpg))+geom_boxplot()+geom_point(aes(color=factor(am)))+scale_x_discrete(labels=c("Automatic","Manual"))+xlab("Transmission (am)") + ylab("Miles per Gallon (mpg)") + ggtitle("Exploration between Transmission and MPG")
+```
+
+In revieweing the data, it is clear that vehicles with a Manual transmission have better MPG, but if you look closely the variability is quite large while the variability in the Automatic category is less. We can quantify this with a two-sample t-test and determine if determine if the null hypothesis (H0: no difference between Manual and Automatic) is valid or should be reject. 
+```{r}
+ttest <- t.test(mpg~am, data=cars)
+ttest$p.value
+```
+With a P Value of 0.0014, we can reject the null hypothesis.  There is a difference between the categories.
+
+###Correlation matrix - All variables
+In looking at this visual correlation matrix, ellipses that are very thin and either red or dark blue have the strongest correlations.
+```{r}
+ctab <- cor(mtcars)
+ctab[,1]
+```
+
+In looking at the matrix, it appears as though MPG can be explained by the following variables cyl, hp and wt without really taking into consideration am.  A visual of this is shown in Appendix A.
+
+Le's explore this more with actual regression models.
+
+##Regression Models
+Our initial model fit revolves around the relationship between MPG and the transmission type.  This model only has a R-squared value of 0.338.  Not very strong.
+
+```{r}
+simple <- lm(mpg~am, cars)
+summary(simple)$adj.r.squared
+```
+
+Next we will use the step function to determine what variables do have an influence on MPG.  We first build the model using all variables and then step through models removing variables until a strong correlation is found.  With the use of AIC as a model quality estimator we note that the model lm(mpg ~ cyl + am + hp + wt) is the most effective.  For a full detail look, please review Appendix A. 
+
+
+```{r, cache=FALSE}
+all <- lm(mpg~., cars)
+least <- step(all, direction="backward", trace=FALSE)
+```
+
+```{r}
+summary(least)$adj.r.squared
+```
+
+The point of concern on this model is that in reviewing model more closely, the variables cyl and am are used, but only for portions of factors (cyl 6/8 and Manual respectively).  In my opinion, this is not a complete model although R-squared is 0.8401.
+
+I have further whitled down my model and finalized it at mpg as a variable of weight and horsepower.  This has a value of 0.815.  Which is just as strong as the variable with 
+
+```{r}
+final <- lm(mpg ~ hp+wt, cars)
+summary(final)$adj.r.squared
+```
+
+###Residual Plots 
+
+Next, we visually inspect the results of the model through its residual plots.  For the other plots, including Normal Q-Q please refer to Appendix B.
+```{r}
+plot(final$fitted, final$resid)
+```
+
+##Appendix A
+```{r}
+library(ellipse)
+ctab <- cor(mtcars)
+colorfun <- colorRamp(c("#CC0000","white","#3366CC"), space="Lab")
+plotcorr(ctab, col=rgb(colorfun((ctab+1)/2), maxColorValue=255), mar = c(0.1, 0.1, 0.1, 0.1))
+```
+
+##Appendix B
+```{r}
+least <- step(all, direction="backward")
+```
+
+##Appendix C
+```{r}
+#plotting residual vs fitted; the plot shows that it is not entirely random/homoskedatic, there seems to be a potential for heterskedasticity in the form of a parabola where the ends have higher positive variance and the middle has high negative variance
+par(mfrow= c(2,2))
+plot(final)
+```
